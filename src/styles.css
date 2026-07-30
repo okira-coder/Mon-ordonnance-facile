@@ -1,0 +1,372 @@
+/* ===== Base ===== */
+:root {
+  --encre: #16181d;
+  --encre-douce: #43484f;
+  --papier: #fbfaf7;
+  --matin-fond: #fff3d1;
+  --matin-encre: #7a4d00;
+  --midi-fond: #ddedff;
+  --midi-encre: #1747b8;
+  --soir-fond: #ffe4d1;
+  --soir-encre: #a33a06;
+  --coucher-fond: #e7e5fb;
+  --coucher-encre: #4032a8;
+  --action: #1747b8;
+  --pharma-action: #0f766e;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Atkinson Hyperlegible', 'Verdana', sans-serif;
+  color: var(--encre);
+  background: var(--papier);
+}
+
+h1, h2, h3 { margin: 0; line-height: 1.15; }
+p { margin: 0; }
+button { font-family: inherit; cursor: pointer; }
+
+/* ===== Page fiche (patient) ===== */
+.page-fiche {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+  font-size: 22px;
+  line-height: 1.5;
+}
+
+.fiche-entete { text-align: center; margin-bottom: 28px; }
+.fiche-eyebrow {
+  font-size: 18px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--encre-douce);
+  font-weight: 700;
+}
+.fiche-entete h1 { font-size: 40px; margin: 6px 0 10px; }
+.fiche-source { font-size: 17px; color: var(--encre-douce); }
+
+.bouton-imprimer {
+  margin-top: 16px;
+  font-size: 18px;
+  padding: 10px 22px;
+  border: 2px solid var(--encre);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--encre);
+}
+
+.chargement { font-size: 24px; text-align: center; padding: 60px 0; }
+.fiche-erreur { text-align: center; padding: 60px 0; }
+.fiche-erreur h1 { font-size: 34px; margin-bottom: 12px; }
+
+/* Cartes moment */
+.carte-moment {
+  position: relative;
+  background: #fff;
+  border: 3px solid transparent;
+  border-radius: 22px;
+  padding: 22px;
+  margin-bottom: 26px;
+  box-shadow: 0 2px 8px rgba(22, 24, 29, 0.07);
+}
+.moment-matin { border-color: var(--matin-encre); }
+.moment-midi { border-color: var(--midi-encre); }
+.moment-soir { border-color: var(--soir-encre); }
+.moment-coucher { border-color: var(--coucher-encre); }
+
+.carte-moment.maintenant {
+  box-shadow: 0 6px 22px rgba(22, 24, 29, 0.18);
+}
+.badge-maintenant {
+  position: absolute;
+  top: -16px;
+  right: 18px;
+  background: #15803d;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  padding: 5px 16px;
+  border-radius: 999px;
+}
+
+.moment-entete {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  margin-bottom: 18px;
+}
+.moment-matin .moment-entete { background: var(--matin-fond); color: var(--matin-encre); }
+.moment-midi .moment-entete { background: var(--midi-fond); color: var(--midi-encre); }
+.moment-soir .moment-entete { background: var(--soir-fond); color: var(--soir-encre); }
+.moment-coucher .moment-entete { background: var(--coucher-fond); color: var(--coucher-encre); }
+
+.icone-moment { width: 52px; height: 52px; flex-shrink: 0; }
+.moment-entete h2 { font-size: 30px; }
+.moment-sous-titre { font-size: 17px; }
+.moment-total {
+  margin-left: auto;
+  text-align: right;
+  font-size: 19px;
+  line-height: 1.2;
+}
+.moment-total strong { display: block; font-size: 36px; }
+
+/* Lignes médicament */
+.ligne-medicament {
+  padding: 16px 4px;
+  border-top: 2px solid #edeae3;
+}
+.ligne-medicament:first-of-type { border-top: none; }
+
+.ligne-haut { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+.comprimes { display: flex; gap: 6px; flex-shrink: 0; }
+.comprime { width: 46px; height: 46px; }
+.ligne-medicament h3 { font-size: 26px; }
+.quantite-texte { font-size: 19px; color: var(--encre-douce); font-weight: 700; }
+
+.utilite { font-size: 22px; }
+
+.encadre {
+  margin-top: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 20px;
+}
+.encadre-titre {
+  display: block;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 16px;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+.encadre-attention { background: #fef6c7; border-left: 8px solid #b98900; }
+.encadre-attention .encadre-titre { color: #7a5b00; }
+.encadre-changement { background: #f1ecfe; border-left: 8px solid #6d4fd4; }
+.encadre-changement .encadre-titre { color: #4032a8; }
+
+/* Bouton écouter */
+.bouton-ecouter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 18px;
+  min-height: 70px;
+  font-size: 25px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--action);
+  border: none;
+  border-radius: 16px;
+}
+.bouton-ecouter svg { width: 32px; height: 32px; }
+.bouton-ecouter.actif { background: #15803d; }
+.bouton-ecouter:focus-visible,
+.bouton-imprimer:focus-visible {
+  outline: 4px solid #f59e0b;
+  outline-offset: 3px;
+}
+
+.fiche-pied {
+  text-align: center;
+  font-size: 18px;
+  color: var(--encre-douce);
+  margin-top: 12px;
+  line-height: 1.6;
+}
+
+/* ===== Page pharmacien ===== */
+.page-pharmacien {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 28px 20px 80px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.pharma-entete { margin-bottom: 26px; }
+.pharma-eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--pharma-action);
+}
+.pharma-entete h1 { font-size: 28px; margin: 4px 0 6px; }
+.pharma-contexte { color: var(--encre-douce); }
+
+.pharma-bloc {
+  background: #fff;
+  border: 1px solid #e4e1d8;
+  border-radius: 14px;
+  padding: 20px 22px;
+  margin-bottom: 20px;
+}
+.pharma-bloc h2 { font-size: 19px; margin-bottom: 14px; }
+
+.table-ordonnance { width: 100%; border-collapse: collapse; font-size: 15px; }
+.table-ordonnance th, .table-ordonnance td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid #edeae3;
+}
+.table-ordonnance th {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--encre-douce);
+}
+
+.bloc-titre-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.bloc-titre-action h2 { margin-bottom: 0; }
+
+.bouton-ia {
+  background: var(--pharma-action);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 700;
+}
+.bouton-ia:disabled { opacity: 0.6; cursor: wait; }
+
+.aide { color: var(--encre-douce); font-size: 14px; margin-bottom: 14px; }
+
+.carte-edition {
+  border: 1px solid #e4e1d8;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+.carte-edition.manquant { border: 2px solid #b91c1c; background: #fef2f2; }
+.carte-edition h3 { font-size: 16px; margin-bottom: 8px; }
+.carte-edition label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--encre-douce);
+  margin-bottom: 10px;
+}
+.carte-edition textarea {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 8px 10px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 400;
+  border: 1px solid #cbc7bb;
+  border-radius: 8px;
+  resize: vertical;
+}
+.alerte-rejet {
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+.rappel-adaptation { font-size: 13px; color: #4032a8; }
+
+.case-relecture {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.case-relecture input { width: 20px; height: 20px; }
+
+.pharma-erreur {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  padding: 10px 14px;
+  border-radius: 10px;
+  margin-bottom: 14px;
+  font-weight: 700;
+}
+
+.bouton-valider {
+  background: var(--action);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 13px 26px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.resultat { border-top: 1px solid #edeae3; padding-top: 16px; }
+.resultat h3 { color: #15803d; margin-bottom: 10px; }
+.lien-fiche {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.lien-fiche a { font-size: 16px; color: var(--action); word-break: break-all; }
+.lien-fiche button {
+  border: 1px solid var(--encre);
+  background: #fff;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 14px;
+}
+.sms-simule {
+  background: #f4f7f6;
+  border: 1px dashed #9ab5b1;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+}
+.sms-titre { font-size: 13px; font-weight: 700; color: var(--encre-douce); margin-bottom: 6px; }
+.sms-corps { font-size: 15px; }
+
+/* ===== Impression ===== */
+@media print {
+  body { background: #fff; }
+  .page-fiche { max-width: none; padding: 0; font-size: 16pt; }
+  .bouton-imprimer, .bouton-ecouter, .badge-maintenant { display: none !important; }
+  .carte-moment {
+    box-shadow: none;
+    break-inside: avoid;
+    margin-bottom: 16pt;
+  }
+  .fiche-entete h1 { font-size: 26pt; }
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 480px) {
+  .page-fiche { font-size: 20px; }
+  .fiche-entete h1 { font-size: 32px; }
+  .moment-entete h2 { font-size: 25px; }
+  .moment-total strong { font-size: 30px; }
+  .comprime { width: 38px; height: 38px; }
+  .bloc-titre-action { flex-direction: column; align-items: flex-start; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .carte-moment.maintenant { animation: apparaitre 0.5s ease-out; }
+  @keyframes apparaitre {
+    from { transform: translateY(6px); opacity: 0.6; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+}

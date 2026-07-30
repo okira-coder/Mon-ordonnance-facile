@@ -1,0 +1,44 @@
+{
+  "patient": { "prenom": "Nadia", "nom": "B.", "naissance": "1956-03-12" },
+  "prescripteur": "Dr Martin — Hôpital Saint-Louis, service de chirurgie",
+  "date": "2026-07-28",
+  "aidant": { "nom": "Karim (fils de Nadia)", "telephone": "06 12 34 56 78" },
+  "lignes": [
+    {
+      "id": "m1",
+      "nom": "Paracétamol",
+      "dosage": "500 mg",
+      "indication": "douleur après l'opération",
+      "quantite": 1,
+      "moments": ["matin", "midi", "soir"],
+      "adaptation": ""
+    },
+    {
+      "id": "m2",
+      "nom": "Amoxicilline",
+      "dosage": "500 mg",
+      "indication": "antibiotique pour éviter une infection après l'opération",
+      "quantite": 1,
+      "moments": ["matin", "soir"],
+      "adaptation": ""
+    },
+    {
+      "id": "m3",
+      "nom": "Furosémide",
+      "dosage": "40 mg",
+      "indication": "élimine l'eau en trop, protège le cœur",
+      "quantite": 1,
+      "moments": ["matin"],
+      "adaptation": "À partir du 15 août : un demi-comprimé seulement."
+    },
+    {
+      "id": "m4",
+      "nom": "Zopiclone",
+      "dosage": "3,75 mg",
+      "indication": "aide à dormir pendant la convalescence",
+      "quantite": 1,
+      "moments": ["coucher"],
+      "adaptation": ""
+    }
+  ]
+}
