@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<title>Cahier des charges — Mon ordonnance facile</title>
+<style>
+  @page { size: A4; margin: 22mm 18mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #16181d;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    margin: 0;
+  }
+  .couverture {
+    height: 240mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    page-break-after: always;
+  }
+  .couverture .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    color: #0f766e;
+    font-size: 10pt;
+  }
+  .couverture h1 { font-size: 30pt; margin: 8pt 0 4pt; }
+  .couverture .sous-titre { font-size: 13pt; color: #43484f; margin-bottom: 28pt; }
+  .couverture .meta { border-top: 2px solid #16181d; padding-top: 12pt; font-size: 10pt; color: #43484f; }
+  .couverture .meta p { margin: 2pt 0; }
+  h2 {
+    font-size: 15pt;
+    border-bottom: 2px solid #0f766e;
+    padding-bottom: 4pt;
+    margin: 22pt 0 10pt;
+    page-break-after: avoid;
+  }
+  h2 .num { color: #0f766e; margin-right: 6pt; }
+  h3 { font-size: 11.5pt; margin: 14pt 0 6pt; page-break-after: avoid; }
+  p { margin: 0 0 7pt; }
+  ul, ol { margin: 0 0 8pt; padding-left: 18pt; }
+  li { margin-bottom: 3pt; }
+  table { width: 100%; border-collapse: collapse; margin: 8pt 0 12pt; font-size: 9.5pt; page-break-inside: avoid; }
+  th, td { border: 1px solid #cbc7bb; padding: 5pt 7pt; text-align: left; vertical-align: top; }
+  th { background: #f0efe9; font-size: 8.5pt; text-transform: uppercase; letter-spacing: 0.04em; }
+  .exigence td:first-child { font-weight: 700; white-space: nowrap; width: 16mm; color: #0f766e; }
+  pre {
+    background: #f7f6f2;
+    border: 1px solid #e4e1d8;
+    border-radius: 4pt;
+    padding: 8pt 10pt;
+    font-size: 8.5pt;
+    line-height: 1.45;
+    overflow: hidden;
+    page-break-inside: avoid;
+  }
+  .encadre {
+    background: #fff7e0;
+    border-left: 4pt solid #b98900;
+    padding: 8pt 12pt;
+    margin: 10pt 0;
+    page-break-inside: avoid;
+  }
+  .citation {
+    background: #f4f7f6;
+    border-left: 4pt solid #0f766e;
+    padding: 10pt 14pt;
+    font-style: italic;
+    margin: 10pt 0;
+    page-break-inside: avoid;
+  }
+  .pied { margin-top: 26pt; border-top: 1px solid #cbc7bb; padding-top: 8pt; font-size: 8.5pt; color: #43484f; }
+</style>
+</head>
+<body>
+
+<div class="couverture">
+  <p class="eyebrow">Cahier des charges — MVP</p>
+  <h1>Mon ordonnance facile</h1>
+  <p class="sous-titre">Rendre l'ordonnance accessible aux personnes en situation de handicap cognitif ou visuel, au moment de la remise des médicaments en pharmacie.</p>
+  <div class="meta">
+    <p><strong>Version :</strong> 1.0 — 30 juillet 2026</p>
+    <p><strong>Statut :</strong> MVP fonctionnel (démonstrateur)</p>
+    <p><strong>Dépôt :</strong> github.com/okira-coder/Mon-ordonnance-facile</p>
+    <p><strong>Stack :</strong> React (Vite) · Express/Node.js · SQLite · Mistral AI</p>
+  </div>
+</div>
+
+<h2><span class="num">1.</span>Contexte et problème</h2>
+<p><strong>Persona de référence : Nadia, 70 ans, déficience intellectuelle légère.</strong> Elle sort d'hospitalisation avec une ordonnance post-opératoire de quatre médicaments, dont un changement de dose programmé. L'ordonnance qui lui est remise est un document conçu pour des professionnels : abréviations, posologies chiffrées, mots techniques. Nadia ne peut ni la lire seule, ni s'en servir pour prendre ses médicaments au bon moment.</p>
+<p>Les conséquences sont connues : erreurs de prise, oublis, dépendance totale à l'aidant, ré-hospitalisations évitables. Le moment clé pour y remédier existe déjà dans le parcours de soin : <strong>la remise des médicaments en pharmacie</strong>, seul contact humain systématique entre l'ordonnance et la première prise.</p>
+<p>Le projet s'ancre sur un document légalement obligatoire : à toute sortie d'hospitalisation, l'établissement doit produire une <strong>lettre de liaison de sortie</strong> (décret de 2016) qui contient le traitement. Notre fiche n'est pas un document de plus — c'est <strong>une annexe accessible à celle-là</strong>.</p>
+
+<h2><span class="num">2.</span>Objectifs</h2>
+<ul>
+  <li><strong>Objectif principal :</strong> permettre à une personne avec un handicap cognitif ou visuel de savoir, à chaque moment de la journée, quels médicaments prendre, pourquoi, et avec quelles précautions — de façon autonome.</li>
+  <li><strong>Objectif pharmacien :</strong> produire cette fiche en moins de 5 minutes lors de la délivrance, sans ressaisie de l'ordonnance, avec une responsabilité pleinement conservée (relecture et validation bloquantes).</li>
+  <li><strong>Objectif prescripteur :</strong> déclarer le besoin d'adaptation à la source, dans le geste de prescription existant, sans nouveau processus.</li>
+  <li><strong>Objectif de démonstration :</strong> prouver la valeur d'usage (compréhension par le patient) avant toute intégration au système d'information hospitalier.</li>
+</ul>
+
+<h2><span class="num">3.</span>Acteurs et parcours cible</h2>
+<table>
+  <tr><th>Acteur</th><th>Rôle dans le parcours</th><th>Écran</th></tr>
+  <tr><td>Prescripteur (médecin hospitalier)</td><td>Rédige l'ordonnance dans son logiciel, déclare le profil de handicap, transmet la prescription — un code de retrait est généré.</td><td><code>/medecin</code></td></tr>
+  <tr><td>Pharmacien d'officine</td><td>Retrouve l'ordonnance par le code, fait rédiger un brouillon d'explications par l'IA, relit, corrige, valide. Imprime la fiche et transmet le lien.</td><td><code>/pharmacien</code></td></tr>
+  <tr><td>Patient (Nadia)</td><td>Ouvre le lien (ou la fiche papier) : sa journée de médicaments en 4 moments, adaptée à son profil, avec lecture audio.</td><td><code>/fiche/:id</code></td></tr>
+  <tr><td>Aidant déclaré</td><td>Reçoit le même lien (SMS), peut accompagner à distance.</td><td><code>/fiche/:id</code></td></tr>
+</table>
+<pre>
+Ordonnance validée par le prescripteur, avec profil d'adaptation   (/medecin)
+        ▼
+CODE de retrait remis au patient (ex : A7K2PM)
+        ▼
+Pharmacien : saisit le code → lignes structurées (nom, dose, moments)
+        + bannière « L'ordonnance présente une spécificité d'accessibilité »
+        ▼
+L'IA rédige à quoi sert chaque médicament + les précautions (FALC)
+        ▼
+Pharmacien : relit, corrige, VALIDE          ← garde-fou, contrôle bloquant
+        ▼
+Fiche papier imprimée + lien SMS (patient ET aidant) + code fiche
+        ▼
+Nadia ouvre le lien : une journée découpée en 4 moments,
+comprimés dessinés, bouton Écouter — rendu adapté au profil déclaré
+</pre>
+
+<h2><span class="num">4.</span>Périmètre du MVP : construit / simulé</h2>
+<p>Le MVP prouve la valeur, pas l'intégration. Chaque étape du parcours est soit réellement construite, soit simulée de façon assumée :</p>
+<table>
+  <tr><th>Étape du parcours</th><th>En production</th><th>Dans le MVP</th></tr>
+  <tr><td>Contenu de l'ordonnance</td><td>LAP/DPI via FHIR <code>MedicationRequest</code> (CI-SIS)</td><td><strong>Simulé</strong> — fichier JSON structuré</td></tr>
+  <tr><td>Dépôt prescripteur + profil handicap + code</td><td>Intégré au logiciel de prescription</td><td><strong>Construit</strong></td></tr>
+  <tr><td>Récupération en pharmacie par code</td><td>INS qualifiée / ordonnance numérique</td><td><strong>Construit</strong> (code 6 caractères)</td></tr>
+  <tr><td>Rédaction des explications par l'IA</td><td>Mistral + base médicament officielle (BDPM)</td><td><strong>Construit</strong> (Mistral, garde-fou anti-dose)</td></tr>
+  <tr><td>Relecture, correction, validation bloquante</td><td>Signature Pro Santé Connect (carte CPS)</td><td><strong>Construit</strong> (bloquant client et serveur)</td></tr>
+  <tr><td>Fiche papier</td><td>Annexe à la lettre de liaison</td><td><strong>Construit</strong> — impression avec CSS dédié</td></tr>
+  <tr><td>Envoi SMS</td><td>Opérateur SMS (Twilio, OVH…)</td><td><strong>Simulé</strong> — message affiché à copier</td></tr>
+  <tr><td>Page patient publique</td><td>Hébergement HDS</td><td><strong>Construit</strong></td></tr>
+</table>
+
+<h2><span class="num">5.</span>Exigences fonctionnelles</h2>
+<h3>Espace prescripteur (/medecin)</h3>
+<table class="exigence">
+  <tr><td>RF-01</td><td>Afficher l'ordonnance de sortie (patient, prescripteur, lignes de traitement, adaptations de dose programmées).</td></tr>
+  <tr><td>RF-02</td><td>Permettre le choix du profil d'accessibilité : <em>aucune adaptation</em>, <em>déficience intellectuelle/cognitive</em>, <em>déficience visuelle</em>.</td></tr>
+  <tr><td>RF-03</td><td>« Ajouter prescription » : enregistrer l'ordonnance avec son profil et générer un code de retrait unique à 6 caractères, affiché avec la consigne de remise au patient.</td></tr>
+</table>
+<h3>Espace pharmacien (/pharmacien)</h3>
+<table class="exigence">
+  <tr><td>RF-04</td><td>Retrouver une ordonnance par son code (insensible à la casse) ; message d'erreur clair si le code est inconnu.</td></tr>
+  <tr><td>RF-05</td><td>Afficher une bannière signalant la spécificité d'accessibilité déclarée par le prescripteur et invitant à retranscrire.</td></tr>
+  <tr><td>RF-06</td><td>Afficher les lignes structurées de l'ordonnance (médicament, dosage, quantité, moments, adaptation prévue).</td></tr>
+  <tr><td>RF-07</td><td>« Rédiger avec l'IA » : générer pour chaque médicament <em>à quoi ça sert</em> et <em>la précaution importante</em>, en FALC, via Mistral.</td></tr>
+  <tr><td>RF-08</td><td>Chaque explication est éditable par le pharmacien ; en cas d'indisponibilité de l'IA, la rédaction manuelle reste possible (message explicite).</td></tr>
+  <tr><td>RF-09</td><td><strong>Contrôle bloquant :</strong> la fiche ne peut être créée que si chaque médicament a une explication non vide ET si la case « J'ai relu et corrigé chaque explication » est cochée. Revérifié côté serveur.</td></tr>
+  <tr><td>RF-10</td><td>Après validation : afficher le lien de la fiche, un bouton copier, le code de la fiche (à reporter sur le papier) et le SMS simulé adressé au patient et à l'aidant déclaré.</td></tr>
+</table>
+<h3>Fiche patient (/fiche/:id)</h3>
+<table class="exigence">
+  <tr><td>RF-11</td><td>Présenter la journée en 4 moments : matin, midi, soir, coucher — dans cet ordre, avec icônes distinctives (soleil levant, soleil, coucher de soleil, lune).</td></tr>
+  <tr><td>RF-12</td><td>Signaler le moment en cours par un badge « C'est maintenant » (calculé sur l'heure locale).</td></tr>
+  <tr><td>RF-13</td><td>Pour chaque médicament : comprimés dessinés un par un (comptables du doigt), nom, quantité en toutes lettres, explication, encadré « Attention » si précaution.</td></tr>
+  <tr><td>RF-14</td><td>Encadré « Changement prévu » affichant le champ <code>adaptation</code> de l'ordonnance <strong>tel quel, sans passage par l'IA</strong>.</td></tr>
+  <tr><td>RF-15</td><td>Moments sans prise affichés avec la mention « Ne rien prendre ».</td></tr>
+  <tr><td>RF-16</td><td>Bouton « Écouter » par moment : synthèse vocale française (Web Speech API), débit ralenti, arrêt possible.</td></tr>
+  <tr><td>RF-17</td><td>Bouton « Imprimer cette fiche » avec CSS d'impression dédié (fond blanc, boutons masqués, pas de coupure dans les cartes).</td></tr>
+  <tr><td>RF-18</td><td><strong>Adaptation au profil déclaré :</strong> cognitif → rendu FALC standard ; visuel → très fort contraste (fond noir, texte blanc/jaune agrandi, boutons plus grands) ; aucun → rendu standard.</td></tr>
+</table>
+
+<h2><span class="num">6.</span>Exigences non fonctionnelles</h2>
+<table class="exigence">
+  <tr><td>RNF-01</td><td><strong>Accessibilité :</strong> police Atkinson Hyperlegible, corps de texte ≥ 20 px sur la fiche patient, contrastes AA minimum (profil visuel : contraste maximal noir/blanc/jaune), focus clavier visible, préférence « reduced motion » respectée, responsive jusqu'au mobile.</td></tr>
+  <tr><td>RNF-02</td><td><strong>Langage :</strong> règles FALC pour tout contenu patient — phrases courtes, une idée par phrase, mots du quotidien, vouvoiement, aucune abréviation médicale.</td></tr>
+  <tr><td>RNF-03</td><td><strong>Sécurité :</strong> la clé API Mistral ne transite jamais par le navigateur (proxy serveur, variable d'environnement, <code>.env</code> hors dépôt Git).</td></tr>
+  <tr><td>RNF-04</td><td><strong>Données de santé :</strong> le MVP fonctionne sur données fictives. Toute mise en production impose un hébergement certifié HDS, une base légale RGPD et une information patient.</td></tr>
+  <tr><td>RNF-05</td><td><strong>Robustesse :</strong> l'indisponibilité de l'IA ne bloque jamais le parcours pharmacien ; les erreurs réseau produisent des messages actionnables.</td></tr>
+  <tr><td>RNF-06</td><td><strong>Simplicité d'exploitation :</strong> démarrage en une commande (<code>npm run dev</code>), base SQLite auto-créée, aucun service externe obligatoire hors Mistral.</td></tr>
+</table>
+
+<h2><span class="num">7.</span>Garde-fous IA</h2>
+<div class="encadre">
+  <p><strong>Principe : l'IA reformule, elle ne prescrit pas.</strong> Trois garde-fous cumulatifs :</p>
+  <ol>
+    <li><strong>Aucun chiffre de posologie ne sort du modèle.</strong> Le serveur rejette toute explication contenant un motif <code>chiffre + mg|g|ml|cp|comprimé</code> ; le champ revient vide et le pharmacien doit rédiger à la main. Les quantités affichées au patient proviennent exclusivement des données structurées de l'ordonnance.</li>
+    <li><strong>Validation humaine bloquante.</strong> Rien n'est montré au patient sans relecture, correction éventuelle et validation explicite du pharmacien — contrôle appliqué côté client et revérifié côté serveur.</li>
+    <li><strong>Les changements de dose ne passent jamais par l'IA.</strong> Le champ <code>adaptation</code> est transporté tel quel de l'ordonnance à l'encadré « Changement prévu ».</li>
+  </ol>
+  <p>En production, l'IA s'appuiera sur une source officielle (BDPM — base de données publique des médicaments, ANSM/HAS — ou base certifiée type Thériaque) : <em>le modèle traduit une source de référence, il ne récite pas ses connaissances.</em></p>
+</div>
+
+<h2><span class="num">8.</span>Architecture technique</h2>
+<pre>
+NAVIGATEUR                          SERVEUR Express (localhost:3000)
+
+/medecin      ── POST /api/ordonnances ──────▶  SQLite (table ordonnances) → code
+/pharmacien   ── GET  /api/ordonnances/:code ▶  SQLite
+   (React)    ── POST /api/expliquer ────────▶  Mistral (mistral-small, T=0.2,
+              ◀── garde-fou anti-dose ────────   réponse JSON forcée)
+              ── POST /api/fiches ───────────▶  SQLite (table fiches) → id
+/fiche/:id    ── GET  /api/fiches/:id ───────▶  SQLite
+</pre>
+<pre>
+mon-ordonnance-facile/
+├── server/
+│   ├── index.js            Express : 5 routes
+│   └── base.db             SQLite, créée automatiquement
+├── src/
+│   ├── App.jsx             3 routes React (react-router)
+│   ├── PageMedecin.jsx     ordonnance + choix handicap + code
+│   ├── PagePharmacien.jsx  code → IA → relecture → validation
+│   ├── PageFiche.jsx       fiche patient adaptée au profil
+│   ├── ordonnance.json     ordonnance simulée (source LAP)
+│   └── styles.css          FALC + profil visuel + impression
+├── livrable/               ce cahier des charges
+└── .env                    MISTRAL_KEY (jamais côté client)
+</pre>
+<p><strong>Choix structurants :</strong> Vite en proxy vers Express (<code>/api</code>) ; état minimal sans librairie de state ; identifiants courts non devinables pour les fiches ; profil d'accessibilité transporté avec les données (ordonnance → fiche) et jamais recalculé.</p>
+
+<h2><span class="num">9.</span>Trajectoire de déploiement</h2>
+<p>Quatre points de branchement identifiés vers le système de santé réel :</p>
+<table>
+  <tr><th>Branchement</th><th>Standard</th><th>Rôle</th></tr>
+  <tr><td>Entrée</td><td>FHIR <code>MedicationRequest</code>, cadre CI-SIS (ANS), financé par le Ségur du numérique</td><td>Consommer les lignes de prescription depuis le LAP/DPI sans développement spécifique éditeur</td></tr>
+  <tr><td>Identité</td><td>INS qualifiée</td><td>Rattacher la fiche au bon patient (obligatoire depuis 2021)</td></tr>
+  <tr><td>Authentification</td><td>Pro Santé Connect / carte CPS</td><td>Rendre la validation du pharmacien traçable et opposable</td></tr>
+  <tr><td>Sortie</td><td>PDF annexé à la lettre de liaison · Mon espace santé · SMS + QR code</td><td>Atteindre le patient par trois canaux non exclusifs</td></tr>
+</table>
+<table>
+  <tr><th></th><th>V1 — Pilote (ce MVP)</th><th>V2 — Service hospitalier</th><th>V3 — Ville</th></tr>
+  <tr><td><strong>Entrée</strong></td><td>JSON simulé / copier-coller</td><td>FHIR depuis le DPI</td><td>+ officine de ville</td></tr>
+  <tr><td><strong>Identité</strong></td><td>Code de retrait</td><td>INS qualifiée</td><td>INS</td></tr>
+  <tr><td><strong>Auth</strong></td><td>Compte local</td><td>Pro Santé Connect</td><td>Pro Santé Connect</td></tr>
+  <tr><td><strong>Stockage</strong></td><td>SQLite</td><td>HDS certifié</td><td>HDS</td></tr>
+  <tr><td><strong>Sortie</strong></td><td>Lien + papier</td><td>+ Mon espace santé</td><td>+ relais pharmacien de ville</td></tr>
+  <tr><td><strong>Effort DSI</strong></td><td><strong>Zéro</strong></td><td>Moyen</td><td>Élevé</td></tr>
+</table>
+<div class="citation">
+  « On ne demande à l'hôpital de changer ni son logiciel, ni son processus, ni son document légal. On annexe une fiche compréhensible à la lettre de liaison qu'il produit déjà, en consommant les standards que le Ségur lui a imposés. »
+</div>
+
+<h2><span class="num">10.</span>Critères d'acceptation et tests réalisés</h2>
+<table>
+  <tr><th>Critère</th><th>Vérification</th><th>Statut</th></tr>
+  <tr><td>Le prescripteur obtient un code après « Ajouter prescription »</td><td>Test navigateur bout en bout</td><td>Validé</td></tr>
+  <tr><td>Le pharmacien retrouve l'ordonnance par code, y compris en minuscules</td><td>Test navigateur</td><td>Validé</td></tr>
+  <tr><td>La bannière d'accessibilité s'affiche selon le profil déclaré</td><td>Test navigateur</td><td>Validé</td></tr>
+  <tr><td>Validation refusée si une explication est vide ou relecture non cochée</td><td>Test navigateur + test API (curl)</td><td>Validé</td></tr>
+  <tr><td>Le serveur refuse une fiche incomplète même en appel API direct</td><td>Test curl</td><td>Validé</td></tr>
+  <tr><td>La fiche s'affiche en 4 moments, badge « C'est maintenant » correct</td><td>Test navigateur</td><td>Validé</td></tr>
+  <tr><td>Profil visuel : rendu fort contraste noir/blanc/jaune</td><td>Test navigateur (capture)</td><td>Validé</td></tr>
+  <tr><td>Sans clé Mistral : message clair, rédaction manuelle possible</td><td>Test API</td><td>Validé</td></tr>
+  <tr><td>Garde-fou anti-dose : explication rejetée si chiffre de posologie</td><td>Revue de code (test IA réel à faire avec clé)</td><td>Implémenté</td></tr>
+  <tr><td>Test utilisateur avec le public cible</td><td>À planifier</td><td>À faire</td></tr>
+</table>
+
+<h2><span class="num">11.</span>Livrables</h2>
+<ul>
+  <li>Code source complet du MVP sur GitHub (<code>okira-coder/Mon-ordonnance-facile</code>), avec README d'installation.</li>
+  <li>Le présent cahier des charges (<code>livrable/cahier-des-charges.pdf</code>).</li>
+  <li>Démonstration locale : <code>npm install</code> puis <code>npm run dev</code> — espaces <code>/medecin</code>, <code>/pharmacien</code> et fiche patient générée.</li>
+</ul>
+
+<p class="pied">Mon ordonnance facile — Cahier des charges v1.0 · 30 juillet 2026 · Document de travail, données patient fictives.</p>
+
+</body>
+</html>
