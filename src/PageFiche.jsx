@@ -141,9 +141,10 @@ export default function PageFiche() {
   if (!fiche) return <main className="page-fiche"><p className="chargement">Chargement…</p></main>
 
   const actuel = momentActuel()
+  const profil = fiche.handicap === 'visuel' ? 'profil-visuel' : ''
 
   return (
-    <main className="page-fiche">
+    <main className={`page-fiche ${profil}`}>
       <header className="fiche-entete">
         <p className="fiche-eyebrow">Mes médicaments</p>
         <h1>La journée de {fiche.patient.prenom}</h1>
@@ -157,10 +158,24 @@ export default function PageFiche() {
 
       {MOMENTS.map((moment) => {
         const meds = fiche.lignes.filter((l) => l.moments.includes(moment.cle))
-        if (meds.length === 0) return null
         const total = meds.reduce((n, m) => n + m.quantite, 0)
         const Icone = moment.icone
         const estMaintenant = moment.cle === actuel
+
+        if (meds.length === 0)
+          return (
+            <section key={moment.cle} className={`carte-moment ${moment.classe} ${estMaintenant ? 'maintenant' : ''}`}>
+              {estMaintenant && <p className="badge-maintenant">C'est maintenant</p>}
+              <header className="moment-entete">
+                <Icone />
+                <div>
+                  <h2>{moment.titre}</h2>
+                  <p className="moment-sous-titre">{moment.sousTitre}</p>
+                </div>
+              </header>
+              <p className="rien-prendre">Ne rien prendre</p>
+            </section>
+          )
 
         return (
           <section key={moment.cle} className={`carte-moment ${moment.classe} ${estMaintenant ? 'maintenant' : ''}`}>

@@ -9,6 +9,9 @@ const db = new Database('server/base.db')
 db.exec(`CREATE TABLE IF NOT EXISTS fiches (
   id TEXT PRIMARY KEY, contenu TEXT, cree_le TEXT
 )`)
+db.exec(`CREATE TABLE IF NOT EXISTS ordonnances (
+  code TEXT PRIMARY KEY, contenu TEXT, cree_le TEXT
+)`)
 
 const construirePrompt = (lignes) => `Tu écris pour une personne âgée avec une déficience intellectuelle légère, selon les règles du FALC (Facile À Lire et à Comprendre).
 
@@ -68,7 +71,24 @@ app.post('/api/expliquer', async (req, res) => {
   }
 })
 
-// 2. Enregistrer une fiche validée
+// 2. Le prescripteur dépose l'ordonnance avec son profil d'accessibilité → code
+app.post('/api/ordonnances', (req, res) => {
+  if (!Array.isArray(req.body?.lignes) || req.body.lignes.length === 0) {
+    return res.status(400).json({ erreur: 'Ordonnance vide.' })
+  }
+  const code = Math.random().toString(36).slice(2, 8).toUpperCase()
+  db.prepare('INSERT INTO ordonnances VALUES (?,?,?)')
+    .run(code, JSON.stringify(req.body), new Date().toISOString())
+  res.json({ code })
+})
+
+// 3. Le pharmacien retrouve l'ordonnance avec le code
+app.get('/api/ordonnances/:code', (req, res) => {
+  const o = db.prepare('SELECT contenu FROM ordonnances WHERE code=?').get(req.params.code.toUpperCase())
+  o ? res.json(JSON.parse(o.contenu)) : res.status(404).json({ erreur: 'Aucune ordonnance avec ce code.' })
+})
+
+// 4. Enregistrer une fiche validée
 app.post('/api/fiches', (req, res) => {
   const lignes = req.body?.lignes
   if (!Array.isArray(lignes) || lignes.length === 0) {
@@ -85,7 +105,7 @@ app.post('/api/fiches', (req, res) => {
   res.json({ id })
 })
 
-// 3. Lire une fiche
+// 5. Lire une fiche
 app.get('/api/fiches/:id', (req, res) => {
   const f = db.prepare('SELECT contenu FROM fiches WHERE id=?').get(req.params.id)
   f ? res.json(JSON.parse(f.contenu)) : res.status(404).json({ erreur: 'introuvable' })

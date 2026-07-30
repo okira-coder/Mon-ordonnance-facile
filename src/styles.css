@@ -340,6 +340,165 @@ button { font-family: inherit; cursor: pointer; }
 .sms-titre { font-size: 13px; font-weight: 700; color: var(--encre-douce); margin-bottom: 6px; }
 .sms-corps { font-size: 15px; }
 
+.rien-prendre {
+  font-size: 26px;
+  font-weight: 700;
+  text-align: center;
+  padding: 18px 0 8px;
+  color: var(--encre-douce);
+}
+
+/* ===== Profil déficience visuelle : très fort contraste, texte agrandi ===== */
+body:has(.profil-visuel) { background: #000; }
+
+.profil-visuel { font-size: 27px; color: #fff; }
+.profil-visuel .fiche-entete h1 { font-size: 46px; color: #fff; }
+.profil-visuel .fiche-eyebrow, .profil-visuel .fiche-source, .profil-visuel .fiche-pied { color: #e6e6e6; }
+.profil-visuel .bouton-imprimer { background: #000; color: #fff; border-color: #fff; }
+
+.profil-visuel .carte-moment {
+  background: #000;
+  border-width: 4px;
+  box-shadow: none;
+}
+.profil-visuel .moment-matin { border-color: #ffd400; }
+.profil-visuel .moment-midi { border-color: #6db3ff; }
+.profil-visuel .moment-soir { border-color: #ff9d5c; }
+.profil-visuel .moment-coucher { border-color: #c4b5ff; }
+
+.profil-visuel .moment-entete { background: #000; padding-left: 0; padding-right: 0; }
+.profil-visuel .moment-matin .moment-entete { color: #ffd400; }
+.profil-visuel .moment-midi .moment-entete { color: #6db3ff; }
+.profil-visuel .moment-soir .moment-entete { color: #ff9d5c; }
+.profil-visuel .moment-coucher .moment-entete { color: #c4b5ff; }
+.profil-visuel .moment-entete h2 { font-size: 36px; }
+.profil-visuel .moment-sous-titre { font-size: 20px; }
+.profil-visuel .moment-total { font-size: 22px; }
+.profil-visuel .moment-total strong { font-size: 44px; }
+
+.profil-visuel .ligne-medicament { border-top-color: #3a3a3a; }
+.profil-visuel .ligne-medicament h3 { font-size: 32px; }
+.profil-visuel .quantite-texte { color: #e6e6e6; font-size: 22px; }
+.profil-visuel .utilite { font-size: 27px; }
+.profil-visuel .comprime circle:first-of-type { fill: #fff; }
+.profil-visuel .rien-prendre { color: #fff; font-size: 30px; }
+
+.profil-visuel .encadre { background: #1c1c1c; font-size: 24px; }
+.profil-visuel .encadre-attention { border-left-color: #ffd400; }
+.profil-visuel .encadre-attention .encadre-titre { color: #ffd400; }
+.profil-visuel .encadre-changement { border-left-color: #c4b5ff; }
+.profil-visuel .encadre-changement .encadre-titre { color: #c4b5ff; }
+
+.profil-visuel .bouton-ecouter { background: #ffd400; color: #000; font-size: 28px; min-height: 80px; }
+.profil-visuel .bouton-ecouter.actif { background: #4ade80; color: #000; }
+.profil-visuel .bouton-ecouter:focus-visible, .profil-visuel .bouton-imprimer:focus-visible {
+  outline-color: #fff;
+}
+
+/* ===== Page médecin ===== */
+.page-medecin {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 28px 20px 80px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.medecin-colonnes {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.feuille-ordonnance {
+  background: #fff;
+  border: 1px solid #16181d;
+  padding: 32px 28px;
+  min-height: 480px;
+  font-size: 15px;
+}
+.feuille-ordonnance header { margin-bottom: 28px; line-height: 1.7; }
+.feuille-ordonnance ul { margin: 0 0 40px; padding-left: 24px; line-height: 2; }
+.feuille-ordonnance .signature { text-align: center; margin-top: 48px; font-weight: 700; }
+
+.panneau-lap {
+  background: #efd9d9;
+  border-radius: 6px;
+  padding: 24px;
+}
+.lap-titre {
+  text-align: center;
+  color: #6b3a3a;
+  padding: 60px 12px;
+  font-size: 15px;
+}
+.lap-actions {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.lap-actions label { font-size: 13px; font-weight: 700; color: var(--encre-douce); }
+.lap-actions select {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 9px 10px;
+  font-family: inherit;
+  font-size: 15px;
+  border: 1px solid #cbc7bb;
+  border-radius: 8px;
+  background: #fff;
+}
+.bouton-lap {
+  align-self: flex-end;
+  background: #2f80ed;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 700;
+}
+.code-remis { font-size: 14px; }
+.code-grand {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-align: center;
+  background: #f4f7f6;
+  border: 2px dashed #9ab5b1;
+  border-radius: 10px;
+  padding: 12px;
+  margin: 10px 0;
+}
+
+/* ===== Saisie code + bannière pharmacien ===== */
+.forme-code { display: flex; gap: 12px; flex-wrap: wrap; }
+.forme-code input {
+  font-family: inherit;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  border: 2px solid #16181d;
+  border-radius: 10px;
+  width: 190px;
+}
+
+.banniere-accessibilite {
+  background: #fff7e0;
+  border: 2px solid #b98900;
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
 /* ===== Impression ===== */
 @media print {
   body { background: #fff; }
@@ -354,6 +513,10 @@ button { font-family: inherit; cursor: pointer; }
 }
 
 /* ===== Mobile ===== */
+@media (max-width: 780px) {
+  .medecin-colonnes { grid-template-columns: 1fr; }
+}
+
 @media (max-width: 480px) {
   .page-fiche { font-size: 20px; }
   .fiche-entete h1 { font-size: 32px; }

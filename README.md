@@ -7,24 +7,38 @@ Rendre une ordonnance accessible à une personne avec une déficience intellectu
 ## Le parcours
 
 ```
-Ordonnance numérique (simulée : src/ordonnance.json)
+Prescripteur (/medecin) : ordonnance + « Choix handicap » → Ajouter prescription
         ▼
-Pharmacien : l'outil affiche les lignes structurées (nom, dose, moments)
+Un CODE est remis au patient (ex : A7K2PM)
+        ▼
+Pharmacien (/pharmacien) : entre le code → l'outil affiche les lignes structurées
+        + bannière « L'ordonnance présente une spécificité d'accessibilité »
         ▼
 L'IA (Mistral) rédige à quoi sert chaque médicament + les précautions
         ▼
 Pharmacien : relit, corrige, VALIDE        ← contrôle bloquant
         ▼
-Fiche imprimable + lien SMS (simulé : affiché à copier)
+Fiche imprimable + lien SMS (simulé) + code fiche
         ▼
 Nadia ouvre le lien : sa journée en 4 moments, avec Écouter
+        — le rendu s'adapte au profil choisi par le prescripteur
 ```
+
+## Profils d'accessibilité
+
+Le prescripteur déclare le handicap ; la fiche patient s'adapte automatiquement :
+
+- **Déficience intellectuelle / cognitive** : FALC, journée en 4 moments colorés, comprimés dessinés un par un, « Ne rien prendre » pour les moments vides, synthèse vocale.
+- **Déficience visuelle** : mêmes contenus en très fort contraste (fond noir, texte blanc/jaune), tailles de texte augmentées, boutons plus grands.
+- **Aucune adaptation** : rendu standard.
 
 ## Ce qui est construit / simulé
 
 | Étape | Statut |
 |---|---|
-| Ordonnance numérique | **Simulé** — `src/ordonnance.json` |
+| Contenu de l'ordonnance (LAP du médecin) | **Simulé** — `src/ordonnance.json` |
+| Dépôt par le prescripteur + choix du handicap + code | **Construit** |
+| Récupération par code en pharmacie | **Construit** |
 | Explications IA (Mistral) | **Construit** |
 | Relecture + validation bloquante du pharmacien | **Construit** (bloquant côté client ET serveur) |
 | Fiche papier | **Construit** — `window.print()` + CSS d'impression |
@@ -55,17 +69,19 @@ MISTRAL_KEY=votre_clé_api_mistral
 npm run dev
 ```
 
-- Espace pharmacien : http://localhost:5173/pharmacien
+- Espace prescripteur : http://localhost:5173/medecin (génère le code)
+- Espace pharmacien : http://localhost:5173/pharmacien (entre le code)
 - Fiche patient : le lien généré après validation (`/fiche/<id>`)
 
 ## Architecture
 
 ```
 ├── server/
-│   ├── index.js          ← Express : 3 routes (proxy Mistral, POST/GET fiches)
+│   ├── index.js          ← Express : 5 routes (proxy Mistral, ordonnances par code, fiches)
 │   └── base.db           ← SQLite, créée toute seule
 ├── src/
-│   ├── App.jsx           ← les 2 routes React
+│   ├── App.jsx           ← les 3 routes React
+│   ├── PageMedecin.jsx   ← ordonnance + choix handicap + code
 │   ├── PagePharmacien.jsx
 │   ├── PageFiche.jsx     ← écran patient FALC (police Atkinson Hyperlegible,
 │   │                        synthèse vocale fr-FR, comprimés dessinés)
